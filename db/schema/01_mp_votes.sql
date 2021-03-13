@@ -1,3 +1,5 @@
+-- 7 3 5 4 2 1 6
+
 DROP TABLE IF EXISTS mp_votes CASCADE;
 
 CREATE TABLE mp_votes (
