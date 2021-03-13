@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS motions CASCADE;
+
+CREATE TABLE motions (
+  id SERIAL PRIMARY KEY NOT NULL, 
+  vote_num INTEGER NOT NULL,
+  parl_num INTEGER NOT NULL,
+  sess_num INTEGER NOT NULL,
+  sitting_num INTEGER NOT NULL,
+  date TIMESTAMP NOT NULL
+);
