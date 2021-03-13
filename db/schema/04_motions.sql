@@ -5,6 +5,9 @@ CREATE TABLE motions (
   vote_num INTEGER NOT NULL,
   parl_num INTEGER NOT NULL,
   sess_num INTEGER NOT NULL,
-  sitting_num INTEGER NOT NULL,
-  date TIMESTAMP NOT NULL
+  sitting_num INTEGER,
+  bill_num VARCHAR(255),
+  date TIMESTAMP NOT NULL,
+  result VARCHAR(255) NOT NULL,
+  summary TEXT NOT NULL
 );
