@@ -4,5 +4,6 @@ CREATE TABLE user_votes (
   id SERIAL PRIMARY KEY NOT NULL, 
   user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   motion_id INTEGER REFERENCES motions(id) ON DELETE CASCADE,
-  voted_yea BOOLEAN NOT NULL
+  voted_yea BOOLEAN NOT NULL,
+  voted_nay BOOLEAN NOT NULL
 );
