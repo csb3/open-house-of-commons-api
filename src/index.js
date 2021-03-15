@@ -13,7 +13,7 @@ db.query(`SELECT * FROM mp_votes;`, []).then(res => console.log(res.rows));
 // Example code for importing route file
 const route_example = require('./routes/route_example');
 
-// localhost:4000/route_example will display 'Hello world'
+// localhost:3001/route_example will display 'Hello world'
 app.use('/route_example', route_example);
 
-app.listen(4000, () => console.log('Now browse to localhost:4000'));
+app.listen(3001, () => console.log('Now browse to localhost:3001'));
