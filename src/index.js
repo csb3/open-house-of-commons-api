@@ -5,15 +5,10 @@ const express = require('express');
 
 const app = express();
 
-// Just to check if db is working correctly.
-// Get rid of these lines once there are actual quries.
-const db = require('./../db/index');
-db.query(`SELECT * FROM mp_votes;`, []).then(res => console.log(res.rows));
+const motions = require('./routes/motions');
+const mp_votes = require('./routes/mp_votes');
 
-// Example code for importing route file
-const route_example = require('./routes/route_example');
+app.use('/motions', motions);
+app.use('/mp_votes', mp_votes);
 
-// localhost:4000/route_example will display 'Hello world'
-app.use('/route_example', route_example);
-
-app.listen(4000, () => console.log('Now browse to localhost:4000'));
+app.listen(3001, () => console.log('Now listening on localhost:3001...'));
