@@ -3,7 +3,7 @@ const { db } = require('../index');
 const seedOneVote = async function(parsedXML) {
   const mp_votes = parsedXML.ArrayOfVoteParticipant.VoteParticipant;
   const motionQuery = 'SELECT id FROM motions WHERE parl_num = $1 AND sess_num = $2 AND vote_num = $3;';
-  const mpVoteQuery = 'INSERT INTO mp_votes (mp_id, motion_id, voted_yea, voted_nay, vote_paired) VALUES ($1, $2, $3, $4, $5)';
+  const mpVoteQuery = 'INSERT INTO mp_votes (mp_id, motion_id, voted_yea, voted_nay, vote_paired, party_name) VALUES ($1, $2, $3, $4, $5, $6)';
 
   for await (const mpVote of mp_votes) {
     const parl_num = mpVote.ParliamentNumber[0];
@@ -17,7 +17,8 @@ const seedOneVote = async function(parsedXML) {
           res.rows[0].id,
           mpVote.IsVoteYea[0],
           mpVote.IsVoteNay[0],
-          mpVote.IsVotePaired[0]
+          mpVote.IsVotePaired[0],
+          mpVote.CaucusShortName[0]
         ];
         db.query(mpVoteQuery, queryParams);
       })

@@ -42,7 +42,8 @@ CREATE TABLE mp_votes (
   motion_id INTEGER NOT NULL REFERENCES motions(id) ON DELETE CASCADE,
   voted_yea BOOLEAN NOT NULL,
   voted_nay BOOLEAN NOT NULL,
-  vote_paired BOOLEAN NOT NULL
+  vote_paired BOOLEAN NOT NULL,
+  party_name VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE mps (
