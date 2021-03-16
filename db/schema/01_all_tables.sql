@@ -1,0 +1,63 @@
+DROP TABLE IF EXISTS user_votes CASCADE;
+DROP TABLE IF EXISTS mps CASCADE;
+DROP TABLE IF EXISTS mp_votes CASCADE;
+DROP TABLE IF EXISTS motions CASCADE;
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS parties CASCADE;
+DROP TABLE IF EXISTS constituencies CASCADE;
+
+CREATE TABLE constituencies (
+  id SERIAL PRIMARY KEY NOT NULL, 
+  name VARCHAR(255) NOT NULL,
+  location VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE parties (
+  id SERIAL PRIMARY KEY NOT NULL, 
+  name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY NOT NULL, 
+  email VARCHAR(255) NOT NULL,
+  password_digest VARCHAR(255) NOT NULL, 
+  constituency_id INTEGER REFERENCES constituencies(id) ON DELETE CASCADE
+);
+
+CREATE TABLE motions (
+  id SERIAL PRIMARY KEY NOT NULL, 
+  vote_num INTEGER NOT NULL,
+  parl_num INTEGER NOT NULL,
+  sess_num INTEGER NOT NULL,
+  sitting_num INTEGER,
+  bill_num VARCHAR(255),
+  date TIMESTAMP NOT NULL,
+  result VARCHAR(255) NOT NULL,
+  summary TEXT NOT NULL
+);
+
+CREATE TABLE mp_votes (
+  id SERIAL PRIMARY KEY NOT NULL, 
+  mp_id INTEGER NOT NULL,
+  motion_id INTEGER NOT NULL REFERENCES motions(id) ON DELETE CASCADE,
+  voted_yea BOOLEAN NOT NULL,
+  voted_nay BOOLEAN NOT NULL,
+  vote_paired BOOLEAN NOT NULL,
+  party_name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE mps (
+  id INTEGER PRIMARY KEY NOT NULL,
+  first_name VARCHAR(255) NOT NULL,  
+  last_name VARCHAR(255) NOT NULL,
+  party_name VARCHAR(255) NOT NULL,
+  constituency_id INTEGER REFERENCES constituencies(id) NOT NULL
+);
+
+CREATE TABLE user_votes (
+  id SERIAL PRIMARY KEY NOT NULL, 
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  motion_id INTEGER REFERENCES motions(id) ON DELETE CASCADE,
+  voted_yea BOOLEAN NOT NULL,
+  voted_nay BOOLEAN NOT NULL
+);

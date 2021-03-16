@@ -7,16 +7,10 @@ const { Pool } = require('pg');
 // with username 'labber' and password 'labber'
 // and the URL is localhost:5432
 // Make sure the owner of 'ohoc_development' is 'labber'
-const pool = new Pool({
+const db = new Pool({
   connectionString: process.env.DATABASE_URL || process.env.DEVELOPMENT,
 });
 
 module.exports = {
-  async query(text, params) {
-    const start = Date.now();
-    const res = await pool.query(text, params);
-    const duration = Date.now() - start;
-    console.log('executed query', { text, duration, rows: res.rowCount });
-    return res;
-  },
+  db,
 };
