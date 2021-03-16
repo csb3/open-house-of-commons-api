@@ -7,7 +7,7 @@ const app = express();
 
 // Just to check if db is working correctly.
 // Get rid of these lines once there are actual quries.
-const db = require('./../db/index');
+const { db } = require('./../db/index');
 db.query(`SELECT * FROM motions;`, []).then(res => console.log(res.rows));
 
 // Example code for importing route file
