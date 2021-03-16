@@ -1,10 +1,6 @@
 const { db } = require('../index');
 const { getXMLfile } = require('./helpers');
 
-/**
- * @params {constituencies: Array}
- * @return {Promise<{}>}
- */
 const seedTable = function(constituencies) {
   const constituency = constituencies[0];
   const queryString = 'INSERT INTO constituencies (name, location) VALUES ($1, $2);';
