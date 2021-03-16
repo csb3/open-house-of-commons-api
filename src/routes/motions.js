@@ -9,6 +9,22 @@ router.get('/', (req, res) => {
   );
 });
 
+router.get('/:id', (req, res) => {
+  db.query(`SELECT * FROM motions WHERE id = $1`, [req.params.id])
+    .then(result=> {
+      if (result.rows.length !== 0) {
+        res.send(result.rows);
+      } else {
+        res.send('error');
+      }
+    })
+    .catch(err => {
+      res
+        .status(500)
+        .json({ error: err.message });
+    });
+});
+
 // router.post('/', (req, res) => {
 //   // Code goes here.
 // });
