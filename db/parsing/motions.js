@@ -14,7 +14,6 @@ const seedTable = function(motions) {
     motion.DecisionResultName[0],
     motion.DecisionDivisionSubject[0]
   ];
-
   if (motions.length > 1) {
     return new Promise((resolve, reject) =>
       resolve(

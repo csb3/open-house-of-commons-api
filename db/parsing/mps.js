@@ -28,6 +28,7 @@ const seedTable = function(mp, constituencyId, mpId) {
 const getConstituency = function(constituencyName) {
   const queryString = 'SELECT id FROM constituencies WHERE name=$1;';
 
+
   // Returns id for constituency that has the matching name.
   return db.query(queryString, [constituencyName]).then(res => res.rows[0].id);
 };
@@ -36,6 +37,7 @@ const processXML = function(parsedXML, mpId) {
   const mp = parsedXML.Profile.MemberOfParliamentRole[0];
   const constituencyName = mp.ConstituencyName[0];
   
+
   return new Promise((resolve, reject) =>
     resolve(
       getConstituency(constituencyName)
