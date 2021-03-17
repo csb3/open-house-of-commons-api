@@ -10,13 +10,21 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+  const responseObj = {};
   db.query(`SELECT * FROM motions WHERE id = $1`, [req.params.id])
     .then(result=> {
       if (result.rows.length !== 0) {
-        res.send(result.rows);
+        responseObj.motionInfo = result.rows;
       } else {
         res.send('error');
       }
+    })
+    .then(() => {
+      db.query(`SELECT * FROM mp_votes WHERE motion_id = $1`, [req.params.id])
+        .then(response => {
+          responseObj.voteInfo = response.rows;
+          res.send(responseObj);
+        });
     })
     .catch(err => {
       res

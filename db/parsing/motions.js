@@ -4,7 +4,7 @@ const seedMotionsTable = async function(parsedXML) {
   const motions = parsedXML.ArrayOfVote.Vote;
   const queryString = 'INSERT INTO motions (vote_num, parl_num, sess_num, bill_num, date, result, summary) VALUES ($1, $2, $3, $4, $5, $6, $7)';
 
-  for await (const motion of motions){
+  for await (const motion of motions) {
     const queryParams = [
       motion.DecisionDivisionNumber[0],
       motion.ParliamentNumber[0],

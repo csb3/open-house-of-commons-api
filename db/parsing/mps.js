@@ -6,7 +6,7 @@ const getMpIds = async function() {
   try {
     return await db.query(queryString);
 
-  } catch(err) {
+  } catch (err) {
     console.log(err);
   }
 };
@@ -18,7 +18,7 @@ const getConstituency = async function(constituencyId) {
   try {
     return await db.query(queryString, [constituencyId]);
 
-  } catch(err) {
+  } catch (err) {
     console.log(err);
   }
 };
@@ -42,7 +42,7 @@ const seedOneMp = async function(parsedXML, id) {
         
         db.query(queryString, queryParams);
       });
-  } catch(error) {
+  } catch (error) {
     console.log(error, 'NAY');
   }
 };
