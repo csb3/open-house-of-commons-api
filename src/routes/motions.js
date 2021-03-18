@@ -20,7 +20,7 @@ router.get('/:id', (req, res) => {
       }
     })
     .then(() => {
-      db.query(`SELECT * FROM mp_votes WHERE motion_id = $1`, [req.params.id])
+      return db.query(`SELECT * FROM mp_votes WHERE motion_id = $1`, [req.params.id])
         .then(response => {
           responseObj.voteInfo = response.rows;
         });
