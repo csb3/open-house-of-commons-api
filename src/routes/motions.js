@@ -20,9 +20,17 @@ router.get('/:id', (req, res) => {
       }
     })
     .then(() => {
-      db.query(`SELECT * FROM mp_votes WHERE motion_id = $1`, [req.params.id])
+      return db.query(`SELECT * FROM mp_votes WHERE motion_id = $1`, [req.params.id])
         .then(response => {
           responseObj.voteInfo = response.rows;
+        });
+    })
+    .then(() => {
+      db.query(`SELECT
+        (SELECT count(*) from user_votes WHERE voted_yea = true AND motion_id = $1) as YesVotes,
+        (SELECT count(*) from user_votes WHERE voted_nay = true AND motion_id = $2) as NoVotes`, [req.params.id, req.params.id])
+        .then(response => {
+          responseObj.userVotes = response.rows;
           res.send(responseObj);
         });
     })
@@ -31,6 +39,7 @@ router.get('/:id', (req, res) => {
         .status(500)
         .json({ error: err.message });
     });
+
 });
 
 // router.post('/', (req, res) => {
