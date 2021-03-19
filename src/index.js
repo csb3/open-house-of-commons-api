@@ -1,5 +1,8 @@
 require('dotenv').config();
 
+const cheerio = require("cheerio");
+const axios = require("axios");
+
 const cors = require("cors");
 const express = require('express');
 
