@@ -61,8 +61,4 @@ router.get('/:id', (req, res) => {
 
 });
 
-// router.post('/', (req, res) => {
-//   // Code goes here.
-// });
-
 module.exports = router;
