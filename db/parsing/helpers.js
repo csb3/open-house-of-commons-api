@@ -4,6 +4,7 @@ const concat = require('concat-stream');
 
 const cheerio = require('cheerio');
 const axios = require('axios');
+const { listenerCount } = require('cluster');
 
 // Helper function to fetch XML files.
 const getXMLfile = function(url) {
@@ -40,13 +41,18 @@ async function webscrape(vote_num) {
   const sittingNum = $("div.mip-vote-title-section").text().replace(/\s+/g,' ').trim().split(" ")[9];
   //console.log(sittingNum);
 
-  const motionLink = responseObj.motionInfo[0].vote_num;
-
+  let billLink;
   if ($("div.ce-mip-vote-block").children('p').eq(3).length) {
-    const billLink = $("div.ce-mip-vote-block").children('p').eq(3).children('a').eq(1)["0"].attribs.href;
+    billLink = $("div.ce-mip-vote-block").children('p').eq(3).children('a').eq(1)["0"].attribs.href;
     //console.log(billLink);
   } else {
-    const billLink = "";
+    billLink = "";
+  }
+
+  return {
+    sponsorNum: sponsorNum,
+    sittingNum: sittingNum,
+    billUrl: billLink
   }
 }
 
