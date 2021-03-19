@@ -45,11 +45,21 @@ router.get('/:id', (req, res) => {
 
       async function webscape() {
         const $ = await fetchHTML(`https://www.ourcommons.ca/members/en/votes/43/2/${responseObj.motionInfo[0].vote_num}`);
-        const MPnum = $("a.ce-mip-mp-tile")["0"].attribs.href.replace(/\D/g,'');
-        console.log(MPnum);
+
+        const sponsorNum = $("a.ce-mip-mp-tile")["0"].attribs.href.replace(/\D/g,'');
+        //console.log(sponsorNum);
 
         const sittingNum = $("div.mip-vote-title-section").text().replace(/\s+/g,' ').trim().split(" ")[9];
-        console.log(sittingNum);
+        //console.log(sittingNum);
+
+        const motionLink = responseObj.motionInfo[0].vote_num;
+
+        if ($("div.ce-mip-vote-block").children('p').eq(3).length) {
+          const billLink = $("div.ce-mip-vote-block").children('p').eq(3).children('a').eq(1)["0"].attribs.href;
+          //console.log(billLink);
+        } else {
+          const billLink = "";
+        }
       }
       webscape();
     })
