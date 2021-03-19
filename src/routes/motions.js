@@ -1,6 +1,9 @@
 const express = require('express');
 const router  = express.Router();
 
+const cheerio = require("cheerio");
+const axios = require("axios");
+
 const { db } = require('./../../db/index');
 
 router.get('/', (req, res) => {
@@ -26,13 +29,29 @@ router.get('/:id', (req, res) => {
         });
     })
     .then(() => {
-      db.query(`SELECT
+      return db.query(`SELECT
         (SELECT count(*) from user_votes WHERE voted_yea = true AND motion_id = $1) as YesVotes,
         (SELECT count(*) from user_votes WHERE voted_nay = true AND motion_id = $2) as NoVotes`, [req.params.id, req.params.id])
         .then(response => {
           responseObj.userVotes = response.rows;
           res.send(responseObj);
         });
+    })
+    .then(() => {
+      async function fetchHTML(url) {
+        const { data } = await axios.get(url)
+        return cheerio.load(data)
+      }
+
+      async function webscape() {
+        const $ = await fetchHTML(`https://www.ourcommons.ca/members/en/votes/43/2/${responseObj.motionInfo[0].vote_num}`);
+        const MPnum = $("a.ce-mip-mp-tile")["0"].attribs.href.replace(/\D/g,'');
+        console.log(MPnum);
+
+        const sittingNum = $("div.mip-vote-title-section").text().replace(/\s+/g,' ').trim().split(" ")[9];
+        console.log(sittingNum);
+      }
+      webscape();
     })
     .catch(err => {
       res

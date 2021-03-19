@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/csb3/open-house-of-commons-api#readme",
   "dependencies": {
+    "axios": "^0.21.1",
+    "cheerio": "^1.0.0-rc.5",
     "concat-stream": "^2.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
