@@ -3,11 +3,21 @@ const router  = express.Router();
 const {
   getAllMps,
   getMpById,
+  getParties,
 } = require('../queries/mps');
 
 router.get('/', (req, res) => {
+  const data = {
+    parties: [],
+    mps: [],
+  };
   getAllMps()
-    .then(result => res.json(result))
+    .then(result => data.mps = result)
+    .then(() => getParties())
+    .then(result => {
+      result.map(party => data.parties.push(party.party_name));
+      res.json(data);
+    })
     .catch(err => console.log('Error while getting all mps data...\n', err));
 });
 

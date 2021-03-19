@@ -32,7 +32,19 @@ const getMpById = function(id) {
  return dbQuery(query);
 };
 
+const getParties = function() {
+  const query = {
+    string: `
+      SELECT party_name FROM mps GROUP BY party_name ORDER BY COUNT(party_name) DESC;
+    `,
+    params: [],
+  };
+
+  return dbQuery(query);
+};
+
 module.exports = {
   getAllMps,
   getMpById,
+  getParties,
 };
