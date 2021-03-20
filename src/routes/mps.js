@@ -4,6 +4,8 @@ const {
   getAllMps,
   getMpById,
   getParties,
+  getAllVotesForMp,
+  getSponsoredMotions,
 } = require('../queries/mps');
 
 router.get('/', (req, res) => {
@@ -22,8 +24,19 @@ router.get('/', (req, res) => {
 });
 
 router.get('/:id', (req, res) => {
+  const data = {
+    profile: {},
+    voted: [],
+    sponsored: [],
+  };
+
   getMpById(req.params.id)
-    .then(result => res.json(result))
+    .then(result => data.profile = {...result[0]})
+    .then(() => getAllVotesForMp(req.params.id))
+    .then(result => data.voted = result)
+    .then(() => getSponsoredMotions(req.params.id))
+    .then(result => data.sponsored = result)
+    .then(() => res.json(data))
     .catch(err => console.log(`Error while getting an mp with ID: ${req.params.id}...\n'`, err));
 });
 
