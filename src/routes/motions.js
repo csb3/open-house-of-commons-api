@@ -1,7 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
-const { db } = require("./../../db/index");
+const cheerio = require("cheerio");
+const axios = require("axios");
+
+const { db } = require('./../../db/index');
 
 router.get("/", (req, res) => {
   db.query(`SELECT * FROM motions;`, []).then((response) =>
@@ -30,8 +33,7 @@ router.get("/:id", (req, res) => {
         });
     })
     .then(() => {
-      db.query(
-        `SELECT
+      return db.query(`SELECT
         (SELECT count(*) from user_votes WHERE voted_yea = true AND motion_id = $1) as YesVotes,
         (SELECT count(*) from user_votes WHERE voted_nay = true AND motion_id = $2) as NoVotes`,
         [req.params.id, req.params.id]
@@ -44,9 +46,5 @@ router.get("/:id", (req, res) => {
       res.status(500).json({ error: err.message });
     });
 });
-
-// router.post('/', (req, res) => {
-//   // Code goes here.
-// });
 
 module.exports = router;
