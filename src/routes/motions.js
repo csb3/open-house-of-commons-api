@@ -41,10 +41,19 @@ router.get("/:id", (req, res) => {
     })
     .then(() => {
       return db.query(`
-        SELECT * FROM users`
+        SELECT * FROM users
+        ORDER BY id`
       )
         .then(response => {
           responseObj.userInfo = response.rows;
+        });
+    })
+    .then(() => {
+      return db.query(`
+        SELECT * FROM user_votes WHERE motion_id=$1 AND user_id=$2`, [req.params.id, req.query.userId]
+      )
+        .then(response => {
+          responseObj.votes = response.rows;
         });
     })
     .then(() => {
