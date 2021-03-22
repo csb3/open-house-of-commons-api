@@ -46,19 +46,19 @@ const getParties = function() {
 const getAllVotesForMp = function(id) {
   const query = {
     string: `
-      SELECT v.voted_yea AS voted_yea, v.voted_nay AS voted_nay, v.vote_paired AS vote_paired, m.vote_num AS vote_num, m.parl_num AS parl_num, m.sess_num AS sess_num, m.sitting_num AS sitting_num, m.bill_num AS bill_num, m.date AS date, m.result AS result, m.bill_url AS bill_url
+      SELECT m.id AS id, v.voted_yea AS voted_yea, v.voted_nay AS voted_nay, v.vote_paired AS vote_paired, m.vote_num AS vote_num, m.parl_num AS parl_num, m.sess_num AS sess_num, m.sitting_num AS sitting_num, m.bill_num AS bill_num, m.date AS date, m.result AS result, m.bill_url AS bill_url, m.summary AS summary
       FROM mp_votes v JOIN motions m ON m.id = v.motion_id WHERE v.mp_id=$1 ORDER BY vote_num DESC;
     `,
     params: [id],
-  }
+  };
 
   return dbQuery(query);
-}
+};
 
 const getSponsoredMotions = function(id) {
   const query = {
     string: `
-      SELECT vote_num, parl_num, sess_num, sitting_num, bill_num, date, result, bill_url
+      SELECT id, vote_num, parl_num, sess_num, sitting_num, bill_num, date, result, bill_url, summary
       FROM motions WHERE mp_id=$1 ORDER BY vote_num DESC;
     `,
     params: [id],
