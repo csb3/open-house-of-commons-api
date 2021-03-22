@@ -1,8 +1,5 @@
 require('dotenv').config();
 
-const cheerio = require("cheerio");
-const axios = require("axios");
-
 const cors = require("cors");
 const express = require('express');
 
@@ -17,6 +14,8 @@ const login   = require('./routes/login');
 
 // Middlewares
 app.use(cors());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 // Route setups
 app.use('/api/votes', motions);
@@ -25,7 +24,5 @@ app.use('/api/users', users);
 app.use('/api/uservotes', uservotes);
 app.use('/api/login', login);
 
-app.use(express.urlencoded({extended: true}));
-app.use(express.json());
 
 app.listen(3001, () => console.log('Now listening on localhost:3001...'));
