@@ -30,7 +30,7 @@ router.get("/:id", (req, res) => {
     .then(() => {
       return db
         .query(
-          `SELECT *, constituencies.* FROM mps
+          `SELECT mps.id as mp_id, *, constituencies.* FROM mps
           FULL JOIN (SELECT voted_yea, voted_nay, vote_paired, mp_id from mp_votes WHERE motion_id = $1) as Foo on mps.id = foo.mp_id
           LEFT JOIN constituencies on mps.constituency_id = constituencies.id
           ORDER BY mps.party_name, mps.last_name;`,
