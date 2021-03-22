@@ -49,6 +49,14 @@ router.get("/:id", (req, res) => {
         });
     })
     .then(() => {
+      return db.query(`
+        SELECT * FROM user_votes WHERE motion_id=$1 AND user_id=$2`, [req.params.id, req.query.userId]
+      )
+        .then(response => {
+          responseObj.votes = response.rows;
+        });
+    })
+    .then(() => {
       return db.query(`SELECT
         (SELECT count(*) from user_votes WHERE voted_yea = true AND motion_id = $1) as YesVotes,
         (SELECT count(*) from user_votes WHERE voted_nay = true AND motion_id = $2) as NoVotes`,
