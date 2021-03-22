@@ -58,7 +58,7 @@ const getAllVotesForMp = function(id) {
 const getSponsoredMotions = function(id) {
   const query = {
     string: `
-      SELECT vote_num, parl_num, sess_num, sitting_num, bill_num, date, result, bill_url, summary
+      SELECT id, vote_num, parl_num, sess_num, sitting_num, bill_num, date, result, bill_url, summary
       FROM motions WHERE mp_id=$1 ORDER BY vote_num DESC;
     `,
     params: [id],
