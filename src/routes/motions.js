@@ -32,7 +32,10 @@ router.get("/:id", (req, res) => {
     .then(() => {
       return db
         .query(
-          `SELECT *, constituencies.* FROM mps FULL JOIN (SELECT voted_yea, voted_nay, vote_paired, mp_id from mp_votes WHERE motion_id = $1) as Foo  on mps.id = foo.mp_id LEFT JOIN constituencies on mps.constituency_id = constituencies.id ORDER BY mps.party_name, mps.last_name;`,
+          `SELECT *, constituencies.* FROM mps
+          FULL JOIN (SELECT voted_yea, voted_nay, vote_paired, mp_id from mp_votes WHERE motion_id = $1) as Foo on mps.id = foo.mp_id
+          LEFT JOIN constituencies on mps.constituency_id = constituencies.id
+          ORDER BY mps.party_name, mps.last_name;`,
           [req.params.id]
         )
         .then((response) => {
@@ -69,6 +72,20 @@ router.get("/:id", (req, res) => {
     .catch((err) => {
       res.status(500).json({ error: err.message });
     });
+});
+
+// 2 "routes"
+// Add --> voted_yea, voted_nay
+// Delete entire motion vote row
+
+// SELECT * FROM user_votes WHERE motion_id=$1 AND user_id=$2`, [req.params.id, ≈]
+
+//NSERT INTO user_votes (user_id, motion_id, voted_yea, voted_nay) VALUES (49, 35, false, true);
+
+router.post('/insert/:id', (req, res) => {
+  const params = [req.query.id, req.params.id, req.query.yea, req.query.nay];
+
+  db.query('INSERT INTO user_votes (user_id, motion_id, voted_yea, voted_nay) VALUES ($1, $2, $3, $4)');
 });
 
 module.exports = router;
