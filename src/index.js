@@ -11,6 +11,7 @@ const users   = require('./routes/users');
 const uservotes = require('./routes/uservotes');
 const login   = require('./routes/login');
 const signup = require('./routes/signup');
+const constituencies = require('./routes/constituencies');
 
 // Middlewares
 app.use(cors());
@@ -24,6 +25,7 @@ app.use('/api/users', users);
 app.use('/api/uservotes', uservotes);
 app.use('/api/login', login);
 app.use('/api/signup', signup);
+app.use('/api/constituencies', constituencies);
 
 
 app.listen(3001, () => console.log('Now listening on localhost:3001...'));
