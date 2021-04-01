@@ -1,4 +1,3 @@
-const { response } = require("express");
 const express = require("express");
 const router = express.Router();
 
@@ -27,45 +26,38 @@ router.get("/:id", (req, res) => {
         res.send("error");
       }
     })
-    .then(() => {
-      return db
+    .then(async() => {
+      const response = await db
         .query(
           `SELECT *, constituencies.* FROM mps
           FULL JOIN (SELECT voted_yea, voted_nay, vote_paired, mp_id from mp_votes WHERE motion_id = $1) as Foo on mps.id = foo.mp_id
           LEFT JOIN constituencies on mps.constituency_id = constituencies.id
           ORDER BY mps.party_name, mps.last_name;`,
           [req.params.id]
-        )
-        .then((response) => {
-          responseObj.voteInfo = response.rows;
-        });
+        );
+      responseObj.voteInfo = response.rows;
     })
-    .then(() => {
-      return db.query(`
+    .then(async() => {
+      const response = await db.query(`
         SELECT email, constituency_id FROM users
         WHERE id = $1`, [1]
-      )
-        .then(response => {
-          responseObj.userInfo = response.rows;
-        });
+      );
+      responseObj.userInfo = response.rows;
     })
-    .then(() => {
-      return db.query(`
+    .then(async() => {
+      const response = await db.query(`
         SELECT * FROM user_votes WHERE motion_id=$1 AND user_id=$2`, [req.params.id, req.query.userId]
-      )
-        .then(response => {
-          responseObj.votes = response.rows;
-        });
+      );
+      responseObj.votes = response.rows;
     })
-    .then(() => {
-      return db.query(`SELECT
+    .then(async() => {
+      const response = await db.query(`SELECT
         (SELECT count(*) from user_votes WHERE voted_yea = true AND motion_id = $1) as YesVotes,
         (SELECT count(*) from user_votes WHERE voted_nay = true AND motion_id = $2) as NoVotes`,
       [req.params.id, req.params.id]
-      ).then((response) => {
-        responseObj.userVotes = response.rows;
-        res.send(responseObj);
-      });
+      );
+      responseObj.userVotes = response.rows;
+      res.send(responseObj);
     })
     .catch((err) => {
       res.status(500).json({ error: err.message });
@@ -86,15 +78,14 @@ router.post('/:id', (req, res) => {
   if (req.body.userVoteId) {
     db.query('DELETE FROM user_votes WHERE id = $1', [req.body.userVoteId])
       .then((result) => responseObj.votes = result.rows)
-      .then(() => {
-        return db.query(`SELECT
+      .then(async() => {
+        const response = await db.query(`SELECT
           (SELECT count(*) from user_votes WHERE voted_yea = true AND motion_id = $1) as YesVotes,
           (SELECT count(*) from user_votes WHERE voted_nay = true AND motion_id = $2) as NoVotes`,
         [req.params.id, req.params.id]
-        ).then((response) => {
-          responseObj.userVotes = response.rows;
-          res.send(responseObj);
-        });
+        );
+        responseObj.userVotes = response.rows;
+        res.send(responseObj);
       })
       .catch(err => console.log(err));
   }
@@ -103,15 +94,14 @@ router.post('/:id', (req, res) => {
     const params = [req.body.userId, req.params.id, req.body.yea, req.body.nay];
     db.query('INSERT INTO user_votes (user_id, motion_id, voted_yea, voted_nay) VALUES ($1, $2, $3, $4) RETURNING *', params)
       .then((result => responseObj.votes = result.rows))
-      .then(() => {
-        return db.query(`SELECT
+      .then(async() => {
+        const response = await db.query(`SELECT
           (SELECT count(*) from user_votes WHERE voted_yea = true AND motion_id = $1) as YesVotes,
           (SELECT count(*) from user_votes WHERE voted_nay = true AND motion_id = $2) as NoVotes`,
         [req.params.id, req.params.id]
-        ).then((response) => {
-          responseObj.userVotes = response.rows;
-          res.send(responseObj);
-        });
+        );
+        responseObj.userVotes = response.rows;
+        res.send(responseObj);
       })
       .catch(err => console.log(err));
     console.log("This is an insert query for with these params: ", params);
