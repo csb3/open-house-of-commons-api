@@ -42,8 +42,8 @@ router.get("/:id", (req, res) => {
     })
     .then(() => {
       return db.query(`
-        SELECT * FROM users
-        ORDER BY id`
+        SELECT email, constituency_id FROM users
+        WHERE id = $1`, [1]
       )
         .then(response => {
           responseObj.userInfo = response.rows;
