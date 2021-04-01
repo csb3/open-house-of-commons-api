@@ -1,8 +1,0 @@
-DROP TABLE IF EXISTS users CASCADE;
-
-CREATE TABLE users (
-  id SERIAL PRIMARY KEY NOT NULL, 
-  email VARCHAR(255) NOT NULL,
-  password_digest VARCHAR(255) NOT NULL, 
-  constituency_id INTEGER REFERENCES constituencies(id) ON DELETE CASCADE
-);

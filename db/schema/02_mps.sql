@@ -1,9 +1,0 @@
-DROP TABLE IF EXISTS mps CASCADE;
-
-CREATE TABLE mps (
-  id INTEGER PRIMARY KEY NOT NULL,
-  first_name VARCHAR(255) NOT NULL,  
-  last_name VARCHAR(255) NOT NULL,
-  party_name VARCHAR(255) NOT NULL,
-  constituency_id INTEGER REFERENCES constituencies(id) NOT NULL
-);
