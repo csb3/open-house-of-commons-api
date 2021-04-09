@@ -4,7 +4,6 @@ const concat = require('concat-stream');
 
 const cheerio = require('cheerio');
 const axios = require('axios');
-const { listenerCount } = require('cluster');
 
 // Helper function to fetch XML files.
 const getXMLfile = function(url) {
